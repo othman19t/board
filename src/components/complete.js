@@ -19,7 +19,9 @@ const Board = () => {
     for (let i = 0; i < rows; i++) {
       let items = data[i].length;
       for (let n = 0; n < items; n++) {
-        completedItems = [...completedItems, data[i][n]];
+        if (data[i][n].complated === true) {
+          completedItems = [...completedItems, data[i][n]];
+        }
       }
     }
     setItems(completedItems);
@@ -32,7 +34,7 @@ const Board = () => {
     <div className="items-con">
       {Items.map((item) => (
         <div className="items" key={uid()}>
-          {item.complated === true && (
+          {
             <Card style={{ width: "100%" }}>
               <Card.Body>
                 <Card.Title>{item.title}</Card.Title>
@@ -42,7 +44,7 @@ const Board = () => {
                 <Card.Text className="centerTxt">{item.complated}</Card.Text>
               </Card.Body>
             </Card>
-          )}
+          }
         </div>
       ))}
     </div>
