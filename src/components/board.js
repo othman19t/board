@@ -198,6 +198,8 @@ const Board = () => {
     const newBoard = await {
       id: oldBoard.id,
       title: oldBoard.title,
+      date: oldBoard.date,
+      dateStamp: oldBoard.dateStamp,
       cardList: newCardList,
     };
 
@@ -256,6 +258,8 @@ const Board = () => {
     const newBoard = await {
       id: oldBoard.id,
       title: oldBoard.title,
+      date:oldBoard.date,
+      dateStamp: oldBoard.dateStamp,
       cardList: newCardList,
     };
 
