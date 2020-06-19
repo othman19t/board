@@ -28,6 +28,16 @@ const EditItem = (props) => {
             </Form.Group>
 
             <Form.Group controlId="formBasicEmail">
+              <Form.Label>Assigned To</Form.Label>
+              <Form.Control
+                type="text"
+                placeholder="Assigned To"
+                name="EditAssignTo"
+                ref={props.registerEdit}
+                defaultValue={props.OnEditItem.title}
+              />
+            </Form.Group>
+            <Form.Group controlId="formBasicEmail">
               <Form.Label>Due Date</Form.Label>
               <Form.Control
                 type="text"

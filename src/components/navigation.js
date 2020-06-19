@@ -10,7 +10,7 @@ const Navigation = () => {
         activeClassName="selected"
         exact={true}
       >
-        Completed Boards
+        Completed Items
       </NavLink>
       <NavLink className="navs" to="/" activeClassName="selected" exact={true}>
         Home

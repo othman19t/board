@@ -17,6 +17,15 @@ const AddItem = (props) => {
           <Form.Group controlId="formBasicEmail">
             <Form.Control
               type="text"
+              placeholder="Assigned To"
+              name="assignedTo"
+              ref={props.register}
+            />
+          </Form.Group>
+
+          <Form.Group controlId="formBasicEmail">
+            <Form.Control
+              type="text"
               placeholder="due date"
               name="dueDate"
               ref={props.register}

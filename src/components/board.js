@@ -16,11 +16,43 @@ const Board = () => {
   const [InputState, setInputState] = useState("");
   const [EditItemState, setEditItemState] = useState({ open: false });
   const [OnEditItem, setOnEditItem] = useState({});
+  const [SortedBoard, setSortedBoard] = useState([]); // Why this work
+
+  var date = new Date();
+  var fullDate = `${date.getFullYear()}/${date.getMonth()}/${date.getDate()} | ${date.getHours()}:${date.getMinutes()}`;
+
+  const sortByTitle = (e) => {
+    e.preventDefault();
+    Board.sort((a, b) => {
+      if (a.title > b.title) {
+        return 1;
+      }
+      return -1;
+    });
+    setSortedBoard(Board); // Why this work if i set any state white calling this fun sorting work with our setting any state it does not work
+  };
+
+  const sortByDate = (e) => {
+    e.preventDefault();
+    Board.sort((a, b) => {
+      if (a.dateStamp < b.dateStamp) {
+        return 1;
+      }
+      return -1;
+    });
+    setSortedBoard({}); // Why this work if i set any state white calling this fun sorting work with our setting any state it does not work
+  };
 
   // fetching the Data reuseable function
   const fetchData = async () => {
-    const res = await fire.collection("posts").orderBy("title", "desc").get(); //[]
+    const res = await fire.collection("posts").get(); //[]
     const posts = await res.docs.map((post) => post.data());
+    await posts.sort((a, b) => {
+      if (a.dateStamp < b.dateStamp) {
+        return 1;
+      }
+      return -1;
+    });
     setBoard(posts);
   };
 
@@ -35,6 +67,8 @@ const Board = () => {
         {
           id: uniID,
           title: InputState,
+          date: fullDate,
+          dateStamp: Date.now(),
           cardList: [],
         },
       ];
@@ -44,17 +78,17 @@ const Board = () => {
       newBoard = await {
         id: uniID,
         title: InputState,
+        date: fullDate,
+        dateStamp: Date.now(),
         cardList: [],
       };
 
-      const insertnow = await fire
-        .doc(`posts/${newBoard.id}`)
-        .set({ id: uniID, title: InputState, cardList: [] });
+      const insertnow = await fire.doc(`posts/${newBoard.id}`).set(newBoard);
       setBoard([newBoard, ...Board]);
     }
     setModalOn(false);
   };
-  
+
   const deleteBoard = async (id) => {
     try {
       const deleteFromBase = await fire.collection("posts").doc(id).delete();
@@ -72,12 +106,12 @@ const Board = () => {
     const uniID = uid();
     const oldBoard1 = await Board.filter((el) => el.id === FormOn);
     const oldBoard = await oldBoard1[0];
-    const dataWithStatus = await { ...data, complated: false, id: uniID };
+    const dataWithStatus = await { ...data, complated: false, id: uniID, BoardID: oldBoard.id, };
     const newCardList = await [...oldBoard.cardList, dataWithStatus];
     const index = await Board.indexOf(oldBoard);
     const { id, title } = await oldBoard;
     const newBoard = await { id, title, cardList: newCardList };
-    // update Text state
+    // update Board state
     const finalData = await [
       ...Board.slice(0, index),
       newBoard,
@@ -99,7 +133,7 @@ const Board = () => {
     const { id, title } = await oldBoard;
     const newBoard = await { id, title, cardList: newCardList };
 
-    // update Text state
+    // update Board state
     const index = await Board.indexOf(oldBoard);
     const finalData = await [
       ...Board.slice(0, index),
@@ -130,6 +164,7 @@ const Board = () => {
     const newItem = await {
       ...oldItem,
       title: data.EditTitle,
+      assignedTo: data.EditAssignTo,
       dueDate: data.EditDueDate,
       note: data.EditNote,
     };
@@ -232,7 +267,11 @@ const Board = () => {
         getBoardInputData={getBoardInputData}
         addBoard={addBoard}
       />
-      <AddBoardBtn SwitchModal={SwitchModal} />
+      <AddBoardBtn
+        SwitchModal={SwitchModal}
+        sortByDate={sortByDate}
+        sortByTitle={sortByTitle}
+      />
 
       <div className="boardcon">
         {Board.map((board) => (
@@ -249,7 +288,7 @@ const Board = () => {
 
             <Card.Body>
               <Card.Title>{board.title}</Card.Title>
-              <Card.Title>{board.id}</Card.Title>
+              <Card.Title>{board.date}</Card.Title>
               <Item
                 board={board}
                 deleteItem={deleteItem}

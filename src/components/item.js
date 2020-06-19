@@ -9,11 +9,10 @@ const Item = (props) => {
           {item.complated === false && (
             <Card style={{ width: "100%" }}>
               <Card.Body>
-                <Card.Title>{item.id}</Card.Title>
                 <Card.Title>{item.title}</Card.Title>
+                <Card.Title>{item.assignedTo}</Card.Title>
                 <Card.Text className="centerTxt">{item.dueDate}</Card.Text>
                 <Card.Text className="centerTxt">{item.note}</Card.Text>
-                <Card.Text className="centerTxt">{item.complated}</Card.Text>
               </Card.Body>
               <ButtonGroup toggle className="mb-2">
                 <ToggleButton

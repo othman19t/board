@@ -1,3 +1,4 @@
+
 import React from "react";
 import { Form, Button } from "react-bootstrap";
 import Modal from "react-modal"; // npm i react-modal || npmjs.com/package/react-modal
@@ -29,7 +30,12 @@ const OurModal = (props) => {
             </Form.Group>
 
             <div className="itemBtnCon">
-              <Button variant="primary" onClick={props.addBoard} block>
+              <Button
+                variant="primary"
+                type="submit"
+                onClick={props.addBoard}
+                block
+              >
                 Submit
               </Button>
             </div>

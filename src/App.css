@@ -1,5 +1,6 @@
 body {
   background: #858585 !important;
+  transition: all 400;
 }
 
 .boardcon {
@@ -9,7 +10,6 @@ body {
   align-items: center;
   flex-wrap: wrap;
   min-height: 60vh;
-  transition: all 2s;
 }
 .cards {
   width: 30rem;
@@ -49,13 +49,18 @@ body {
   width: 100%;
   margin: 1rem 0;
 }
-.addBoardsCon {
-  /* width: 100%;
-  overflow-x: scroll; */
-}
 .addboard {
+  padding-top: 1rem;
   width: 100%;
-  padding: 2rem 10%;
+  display: flex;
+  justify-content: space-around;
+}
+.half-width {
+  width: 49%;
+  height: 5rem;
+}
+#dropdown-basic-button {
+  width: 100%;
 }
 .AddBoardModal {
   width: 100vw;
@@ -106,7 +111,7 @@ body {
 }
 .ReactModal__Content {
   width: 70%;
-  height: 70vh;
+  min-height: 92vh;
   position: fixed;
   top: 50% !important;
   left: 50% !important;
@@ -126,7 +131,7 @@ body {
 }
 
 .mar-top {
-  margin-top: 5rem;
+  margin-top: 1rem;
 }
 .footer {
   height: 10rem;
@@ -139,4 +144,20 @@ body {
   transition: all 2s ease-in-out;
   position: relative;
   bottom: 0;
+}
+
+.items-con {
+  width: 100%;
+  min-height: 65vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-wrap: wrap;
+}
+.items {
+  margin: 1rem;
+  width: 15rem;
+  -webkit-box-shadow: 22px 35px 108px 11px rgba(250, 247, 250, 0.72);
+  -moz-box-shadow: 22px 35px 108px 11px rgba(250, 247, 250, 0.72);
+  box-shadow: 22px 35px 108px 11px rgba(250, 247, 250, 0.72);
 }

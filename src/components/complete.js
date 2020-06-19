@@ -5,51 +5,46 @@ import uid from "uid";
 import CompletedItem from "./completedItem";
 
 const Board = () => {
-  const [Board, setBoard] = useState([]);
+  const [Items, setItems] = useState([]);
 
   // fetching the Data reuseable function
   const fetchData = async () => {
     const res = await fire.collection("posts").orderBy("title", "desc").get(); //[]
-    const posts = await res.docs.map((post) => post.data());
-    setBoard(posts);
-  };
+    const posts = res.docs.map((post) => post.data());
 
-  const deleteBoard = async (id) => {
-    try {
-      const deleteFromBase = await fire.collection("posts").doc(id).delete();
-      const board = await Board.filter((el) => el.id !== id);
-      setBoard(board);
-    } catch (err) {
-      console.log(err);
+    const data = posts.map((board) => board.cardList);
+    let completedItems = [];
+    const rows = data.length;
+
+    for (let i = 0; i < rows; i++) {
+      let items = data[i].length;
+      for (let n = 0; n < items; n++) {
+        completedItems = [...completedItems, data[i][n]];
+      }
     }
+    setItems(completedItems);
   };
   useEffect(() => {
     fetchData();
   }, []);
 
   return (
-    <div className="con">
-      <div className="boardcon">
-        {Board.map((board) => (
-          <Card key={uid()} style={{ width: "25rem" }} className="cards">
-            <ButtonGroup toggle className="mb-2">
-              <ToggleButton
-                variant="secondary"
-                type="checkbox"
-                defaultChecked
-                onClick={(e) => deleteBoard(board.id)}
-              >
-                Delete Board
-              </ToggleButton>
-            </ButtonGroup>
-            <Card.Body>
-              <Card.Title>{board.title}</Card.Title>
-              <Card.Title>{board.id}</Card.Title>
-              <CompletedItem board={board} />
-            </Card.Body>
-          </Card>
-        ))}
-      </div>
+    <div className="items-con">
+      {Items.map((item) => (
+        <div className="items" key={uid()}>
+          {item.complated === true && (
+            <Card style={{ width: "100%" }}>
+              <Card.Body>
+                <Card.Title>{item.title}</Card.Title>
+                <Card.Text className="centerTxt">{item.assignedTo}</Card.Text>
+                <Card.Text className="centerTxt">{item.dueDate}</Card.Text>
+                <Card.Text className="centerTxt">{item.note}</Card.Text>
+                <Card.Text className="centerTxt">{item.complated}</Card.Text>
+              </Card.Body>
+            </Card>
+          )}
+        </div>
+      ))}
     </div>
   );
 };
