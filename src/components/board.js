@@ -106,11 +106,22 @@ const Board = () => {
     const uniID = uid();
     const oldBoard1 = await Board.filter((el) => el.id === FormOn);
     const oldBoard = await oldBoard1[0];
-    const dataWithStatus = await { ...data, complated: false, id: uniID, BoardID: oldBoard.id, };
+    const dataWithStatus = await {
+      ...data,
+      complated: false,
+      id: uniID,
+      BoardID: oldBoard.id,
+    };
     const newCardList = await [...oldBoard.cardList, dataWithStatus];
     const index = await Board.indexOf(oldBoard);
-    const { id, title } = await oldBoard;
-    const newBoard = await { id, title, cardList: newCardList };
+    const { id, title, date, dateStamp } = await oldBoard;
+    const newBoard = await {
+      date,
+      dateStamp,
+      id,
+      title,
+      cardList: newCardList,
+    };
     // update Board state
     const finalData = await [
       ...Board.slice(0, index),
@@ -130,8 +141,14 @@ const Board = () => {
     const newCardList = await oldBoard.cardList.filter(
       (el) => el.id !== itemId
     );
-    const { id, title } = await oldBoard;
-    const newBoard = await { id, title, cardList: newCardList };
+    const { id, title, date, dateStamp } = await oldBoard;
+    const newBoard = await {
+      id,
+      title,
+      date,
+      dateStamp,
+      cardList: newCardList,
+    };
 
     // update Board state
     const index = await Board.indexOf(oldBoard);
