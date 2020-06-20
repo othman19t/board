@@ -6,7 +6,7 @@ const Navigation = () => {
     <div className="navsCon">
       <NavLink
         className="navs"
-        to="/uncompletedboards"
+        to="/completedboards"
         activeClassName="selected"
         exact={true}
       >

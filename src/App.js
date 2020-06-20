@@ -16,7 +16,7 @@ function App() {
           <Switch>
             <Route path="/" component={CompletedBoards} exact={true} />
             <Route
-              path="/uncompletedboards"
+              path="/completedboards"
               component={UnCompletedBoards}
               exact={true}
             />
