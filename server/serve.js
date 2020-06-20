@@ -8,6 +8,11 @@ const app = express();
 const publicPath = path.join(__dirname, "..", "build");
 const port = process.env.PORT || 3000;
 app.use(express.static(publicPath));
+app.get("*", (req, res) => {
+  res.send(
+    ' <a href="/"> 404 Page not found, click here to land on the home page</a>'
+  );
+});
 app.listen(port);
 
 // app.listen(port, () => {
