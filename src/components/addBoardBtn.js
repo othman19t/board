@@ -10,10 +10,21 @@ const AddBoardBtn = (props) => {
         </Button>
       </div>
       <div className="half-width">
-        <DropdownButton id="dropdown-basic-button" title="Sort By" >
+        <DropdownButton
+          className="in-half"
+          id="dropdown-basic-button"
+          title="Sort By"
+        >
           <Dropdown.Item onClick={props.sortByTitle}>Title</Dropdown.Item>
           <Dropdown.Item onClick={props.sortByDate}>Date</Dropdown.Item>
         </DropdownButton>
+        <Button
+          onClick={props.taggelView}
+          className="in-half"
+          variant="primary"
+        >
+          Taggel
+        </Button>
       </div>
     </div>
   );

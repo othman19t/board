@@ -8,6 +8,7 @@ import AddBoardBtn from "./addBoardBtn";
 import AddItem from "./addItem";
 import Item from "./item";
 import EditItem from "./editItem";
+import BoardsList from "./boardsList";
 
 const Board = () => {
   const [FormOn, setFormOn] = useState("");
@@ -16,31 +17,30 @@ const Board = () => {
   const [InputState, setInputState] = useState("");
   const [EditItemState, setEditItemState] = useState({ open: false });
   const [OnEditItem, setOnEditItem] = useState({});
+  const [View, setView] = useState(true);
   const [SortedBoard, setSortedBoard] = useState([]); // Why this work
 
   var date = new Date();
   var fullDate = `${date.getFullYear()}/${date.getMonth()}/${date.getDate()} | ${date.getHours()}:${date.getMinutes()}`;
 
-  const sortByTitle = (e) => {
-    e.preventDefault();
+  const sortByTitle = () => {
     Board.sort((a, b) => {
-      if (a.title > b.title) {
+      if (a.title.toLowerCase() > b.title.toLowerCase()) {
         return 1;
       }
       return -1;
     });
-    setSortedBoard(Board); // Why this work if i set any state white calling this fun sorting work with our setting any state it does not work
+    setSortedBoard("title"); // Why this work if i set any state white calling this fun sorting work with our setting any state it does not work
   };
 
-  const sortByDate = (e) => {
-    e.preventDefault();
+  const sortByDate = () => {
     Board.sort((a, b) => {
-      if (a.dateStamp < b.dateStamp) {
+      if (a.dateStamp < b.dateStam) {
         return 1;
       }
       return -1;
     });
-    setSortedBoard({}); // Why this work if i set any state white calling this fun sorting work with our setting any state it does not work
+    setSortedBoard("date"); // Why this work if i set any state white calling this fun sorting work with our setting any state it does not work
   };
 
   // fetching the Data reuseable function
@@ -258,7 +258,7 @@ const Board = () => {
     const newBoard = await {
       id: oldBoard.id,
       title: oldBoard.title,
-      date:oldBoard.date,
+      date: oldBoard.date,
       dateStamp: oldBoard.dateStamp,
       cardList: newCardList,
     };
@@ -275,6 +275,11 @@ const Board = () => {
       .doc(oldBoard.id)
       .update({ cardList: newCardList });
   };
+
+  const taggelView = () => {
+    setView(!View);
+  };
+
   useEffect(() => {
     fetchData();
   }, []);
@@ -292,41 +297,59 @@ const Board = () => {
         SwitchModal={SwitchModal}
         sortByDate={sortByDate}
         sortByTitle={sortByTitle}
+        taggelView={taggelView}
       />
 
-      <div className="boardcon">
-        {Board.map((board) => (
-          <Card key={uid()} style={{ width: "25rem" }} className="cards">
-            <AddItem
-              board={board}
-              FormOn={FormOn}
-              emptyForm={emptyForm}
-              assignForm={assignForm}
-              register={register}
-              submiting={handleSubmit(onSubmit)}
-              deleteBoard={deleteBoard}
-            />
+      {View ? (
+        <div>
+          {" "}
+          <div className="boardcon">
+            {Board.map((board) => {
+              return (
+                <div key={uid()}>
+                  <Card
+                    key={uid()}
+                    style={{ width: "25rem" }}
+                    className="cards"
+                  >
+                    <AddItem
+                      board={board}
+                      FormOn={FormOn}
+                      emptyForm={emptyForm}
+                      assignForm={assignForm}
+                      register={register}
+                      submiting={handleSubmit(onSubmit)}
+                      deleteBoard={deleteBoard}
+                    />
 
-            <Card.Body>
-              <Card.Title>{board.title}</Card.Title>
-              <Card.Title>{board.date}</Card.Title>
-              <Item
-                board={board}
-                deleteItem={deleteItem}
-                StartEditItem={StartEditItem}
-                markAsCompleted={markAsCompleted}
-              />
-              <EditItem
-                EditItemState={EditItemState}
-                StartEditItemOff={StartEditItemOff}
-                OnEditItem={OnEditItem}
-                registerEdit={register}
-                submitingEdit={handleSubmit(submitingEdit)}
-              />
-            </Card.Body>
-          </Card>
-        ))}
-      </div>
+                    <Card.Body>
+                      <Card.Title>{board.title}</Card.Title>
+                      <Card.Title>{board.date}</Card.Title>
+                      <Item
+                        board={board}
+                        deleteItem={deleteItem}
+                        StartEditItem={StartEditItem}
+                        markAsCompleted={markAsCompleted}
+                      />
+                      <EditItem
+                        EditItemState={EditItemState}
+                        StartEditItemOff={StartEditItemOff}
+                        OnEditItem={OnEditItem}
+                        registerEdit={register}
+                        submitingEdit={handleSubmit(submitingEdit)}
+                      />
+                    </Card.Body>
+                  </Card>
+                </div>
+              );
+            })}
+          </div>
+        </div>
+      ) : (
+        <div>
+          <BoardsList Board={Board} taggelView={taggelView} />
+        </div>
+      )}
     </div>
   );
 };
